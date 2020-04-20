@@ -1,8 +1,38 @@
 require "tools/version"
 
 module Tools
+  class Pokemon
+    def initialize(calculate_damage)
+      @calculate_damage = calculate_damage
+    end
+
+    def damage(damage)
+      effectiveness = [
+        ['fire', 'grass', 2],
+        ['grass', 'fire', 0.5],
+        ['fire', 'water', 0.5],
+        ['water', 'fire', 2],
+        ['fire', 'electric', 1],
+        ['water', 'grass', 0.5],
+        ['grass', 'water', 2],
+        ['water', 'electric', 0.5],
+        ['electric', 'water', 2],
+        ['grass', 'electric', 1],
+        ['electric', 'grass', 1],
+        ['electric', 'fire', 1]
+      ]
+      damage = 0
+      effectiveness.each do |i|
+        if @calculate_damage[0] == i[0] && @calculate_damage[1] == i[1]
+          damage = 50 * (@calculate_damage[2] / @calculate_damage[3]) * i[2]
+        end
+      end
+      damage
+    end
+  end
+
   class Adjust_time
-    def initialize (time)
+    def initialize(time)
       @time = time
     end
 
@@ -26,6 +56,32 @@ module Tools
       new_hours = '0' + new_hours.to_s if new_hours < 10
       new_hours.to_s + ':' + new_minutes.to_s + ':' + new_seconds.to_s
     end
+
+    # def new_time?(new_time)
+    #   new_seconds = '0' + new_seconds.to_s if new_seconds < 10
+    #   new_minutes = '0' + new_minutes.to_s if new_minutes < 10
+    #   new_hours = '0' + new_hours.to_s if new_hours < 10
+    #   new_hours.to_s + ':' + new_minutes.to_s + ':' + new_seconds.to_s
+    # end
+
+    # def calculate_time
+    #   new_minutes = 0
+    #   new_hours = 0
+    #   new_seconds = (@time[0][6, 2].to_i + @time[3])
+    #   if new_seconds > 59
+    #     new_minutes = new_seconds / 60
+    #     new_seconds -= (new_minutes * 60)
+    #   end
+    #   new_minutes += (@time[0][3, 2].to_i + @time[2])
+    #   if new_minutes > 59
+    #     new_hours = new_minutes / 60
+    #     new_minutes -= (new_hours * 60)
+    #   end
+    #   new_hours += (@time[0][0, 2].to_i + @time[1])
+    #   new_hours -= (new_hours / 24) * 24 if new_hours > 24
+    #   new_hours
+    # end
+
   end
 
   class Armstrong
