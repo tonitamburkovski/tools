@@ -2,33 +2,44 @@ require "tools/version"
 
 module Tools
   class Pokemon
+    EFFECTIVENESS = [
+      ['fire', 'grass', 2],
+      ['grass', 'fire', 0.5],
+      ['fire', 'water', 0.5],
+      ['water', 'fire', 2],
+      ['fire', 'electric', 1],
+      ['water', 'grass', 0.5],
+      ['grass', 'water', 2],
+      ['water', 'electric', 0.5],
+      ['electric', 'water', 2],
+      ['grass', 'electric', 1],
+      ['electric', 'grass', 1],
+      ['electric', 'fire', 1]
+    ]
+
     def initialize(calculate_damage)
       @calculate_damage = calculate_damage
     end
 
-    def damage(damage)
-      effectiveness = [
-        ['fire', 'grass', 2],
-        ['grass', 'fire', 0.5],
-        ['fire', 'water', 0.5],
-        ['water', 'fire', 2],
-        ['fire', 'electric', 1],
-        ['water', 'grass', 0.5],
-        ['grass', 'water', 2],
-        ['water', 'electric', 0.5],
-        ['electric', 'water', 2],
-        ['grass', 'electric', 1],
-        ['electric', 'grass', 1],
-        ['electric', 'fire', 1]
-      ]
-      damage = 0
-      effectiveness.each do |i|
+    def damage
+      cal_damage = 0
+      EFFECTIVENESS.each do |i|
         if @calculate_damage[0] == i[0] && @calculate_damage[1] == i[1]
-          damage = 50 * (@calculate_damage[2] / @calculate_damage[3]) * i[2]
+          cal_damage = 50 * (@calculate_damage[2] / @calculate_damage[3]) * i[2]
         end
+        #  calculate(i, cal_damage)
+        # puts cal_damage
       end
-      damage
+      cal_damage
     end
+
+    # def calculate(i, cal_damage)
+    #   # cal_damage = 0
+    #   if @calculate_damage[0] == i[0] && @calculate_damage[1] == i[1]
+    #     cal_damage = 50 * (@calculate_damage[2] / @calculate_damage[3]) * i[2]
+    #   end
+    #   cal_damage
+    # end
   end
 
   class Adjust_time
@@ -36,7 +47,7 @@ module Tools
       @time = time
     end
 
-    def new_time? (new_time)
+    def new_time
       new_minutes = 0
       new_hours = 0
       new_seconds = (@time[0][6, 2].to_i + @time[3])
